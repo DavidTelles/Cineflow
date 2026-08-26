@@ -4,7 +4,6 @@ import { useState } from "react";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const EyeIcon = (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
@@ -80,6 +79,11 @@ export default function RegisterPage() {
                     >
                         Submit
                     </button>
+                <div className="h-10 w-30">
+                    <p className="text-blue-600 hover:underline">
+                        <a href="#">Forget password</a>
+                    </p>
+                </div>
                 </form>
             </div>
         </main>

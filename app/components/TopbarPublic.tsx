@@ -41,6 +41,9 @@ export default function TopbarPublic() {
                     {isDark ? sun : moon}
                 </button>
 
+                <Link href="/home" className="p-2">
+                    Home
+                </Link>
                 <Link href="/login" className="p-2">
                     Login
                 </Link>
