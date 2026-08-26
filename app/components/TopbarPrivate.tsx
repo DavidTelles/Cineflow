@@ -99,8 +99,8 @@ export default function TopbarPublic() {
                         </div>
 
                         <nav className="flex flex-col gap-2 w-full pt-2 border-t border-gray-200 dark:border-gray-800">
-                            <Link href="/home-page" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Home
+                            <Link href="/movies" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
+                                Movies
                             </Link>
                             <Link href="/favorites" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
                                 Favorites
