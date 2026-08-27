@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export default async function GET(
+export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
