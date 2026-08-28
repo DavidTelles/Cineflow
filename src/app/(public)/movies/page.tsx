@@ -15,6 +15,8 @@ interface Movie {
 
 export default function Movie() {
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [toprateds, setToprated] = useState<Movie[]>([]);
+    const [upcomings, setUpcoming] = useState<Movie[]>([]);
     const [featured, setFeatured] = useState<Movie | null>(null);
     const [loading, setLoading] = useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -22,15 +24,26 @@ export default function Movie() {
     useEffect(() => {
         async function loadData() {
             try {
-                const [resMovies, resFeatured] = await Promise.all([
+                const [
+                    resMovies,
+                    resFeatured, 
+                    resToprated,
+                    resUpcoming
+                ] = await Promise.all([
                     fetch("/api/movies"),
                     fetch("/api/movies/trending"),
+                    fetch("/api/movies/top-rated"),
+                    fetch("/api/movies/upcoming"),
                 ]);
 
                 const jsonMovies = await resMovies.json();
                 const jsonFeatured = await resFeatured.json();
+                const jsonToprated = await resToprated.json();
+                const jsonUpcoming = await resUpcoming.json();
 
                 setMovies(jsonMovies.data?.results || []);
+                setToprated(jsonToprated.results || []);
+                setUpcoming(jsonUpcoming.results || []);
                 setFeatured(jsonFeatured.results?.[0] || null);
             } catch (error) {
                 console.error('Fetch Error!', error);
@@ -119,6 +132,68 @@ export default function Movie() {
                                     id={movie.id}
                                     title={movie.title}
                                     urlImage={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <button 
+                        onClick={rollRight} 
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+                    >
+                        {rightArrow}
+                    </button>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-100 mb-4 mt-16">Top Rated</h2>
+
+                <div className="group relative">
+                    <button 
+                        onClick={rollLeft} 
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+                    >
+                        {leftArrow}
+                    </button>
+                    <div 
+                        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-none scroll-smooth" 
+                        ref={scrollRef}
+                    >
+                        {toprateds.map((toprated) => (
+                            <div key={toprated.id} className="flex-none w-36 sm:w-48 snap-start transition transform hover:scale-105 duration-300">
+                                <Card
+                                    id={toprated.id}
+                                    title={toprated.title}
+                                    urlImage={`https://image.tmdb.org/t/p/w500${toprated.poster_path}`}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <button 
+                        onClick={rollRight} 
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+                    >
+                        {rightArrow}
+                    </button>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-100 mb-4 mt-16">Up coming</h2>
+
+                <div className="group relative">
+                    <button 
+                        onClick={rollLeft} 
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+                    >
+                        {leftArrow}
+                    </button>
+                    <div 
+                        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-none scroll-smooth" 
+                        ref={scrollRef}
+                    >
+                        {upcomings.map((toprated) => (
+                            <div key={toprated.id} className="flex-none w-36 sm:w-48 snap-start transition transform hover:scale-105 duration-300">
+                                <Card
+                                    id={toprated.id}
+                                    title={toprated.title}
+                                    urlImage={`https://image.tmdb.org/t/p/w500${toprated.poster_path}`}
                                 />
                             </div>
                         ))}
