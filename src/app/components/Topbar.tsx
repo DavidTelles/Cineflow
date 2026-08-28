@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 
-export default function TopbarPublic() {
+export default function Topbar() {
     const [menu, setMenu] = useState(false)
     const [isDark, setIsDark] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
@@ -59,7 +59,6 @@ export default function TopbarPublic() {
 
     return (
         <>
-            {/* Botão Hambúrguer */}
             {!menu && (
                 <button
                     onClick={() => setMenu(true)}
@@ -69,16 +68,12 @@ export default function TopbarPublic() {
                     {menuHamburguer}
                 </button>
             )}
-
-            {/* Backdrop */}
             {menu && (
                 <div
                     onClick={() => setMenu(false)}
                     className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 cursor-pointer"
                 />
             )}
-
-            {/* Menu Lateral */}
             {menu && (
                 <aside className="fixed top-0 left-0 h-full w-64 bg-white/95 dark:bg-gray-900/95 text-gray-900 dark:text-white backdrop-blur-md z-50 p-5 flex flex-col justify-between shadow-2xl border-r border-gray-200 dark:border-gray-800 transition-all">
                     <div className="flex flex-col gap-6">
@@ -111,6 +106,12 @@ export default function TopbarPublic() {
                             <Link href="/profile" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
                                 Profile
                             </Link>
+                            <Link href="/login" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
+                                Login
+                            </Link>
+                            <Link href="/register" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
+                                Register
+                            </Link>
                         </nav>
                     </div>
 
@@ -126,8 +127,6 @@ export default function TopbarPublic() {
                     </div>
                 </aside>
             )}
-
-            {/* Formulário de Busca (Canto Superior Direito) */}
             {!menu && (
                 <form
                     onSubmit={handleSearchSubmit}
