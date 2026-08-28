@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Card from '@/app/components/Card';
+import Card from '@/src/app/components/Card';
 
 interface Movie {
     id: number;
@@ -57,6 +57,7 @@ function SearchContent() {
                     {movies.map((movie) => (
                         <Card
                             key={movie.id}
+                            id={movie.id}
                             title={movie.title}
                             urlImage={
                                 movie.poster_path
