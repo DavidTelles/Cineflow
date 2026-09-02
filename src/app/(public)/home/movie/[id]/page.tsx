@@ -1,5 +1,28 @@
 import GetMovieById from "@/src/services/get-movie"
 import Cast from "@/src/app/components/Cast"
+import TrailerModal from "@/src/app/components/TrailerModal";
+
+async function getMovieTrailer(id: string): Promise<string | null> {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${id}/videos`,
+        {
+            headers: {
+                Authorization: `Bearer ${process.env.TMDB_API_TOKEN}`,
+                accept: "application/json",
+            },
+        }
+    );
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    const trailer = data.results?.find(
+        (video: { type?: string; site?: string; key?: string }) =>
+            video.type === "Trailer" && video.site === "YouTube"
+    );
+
+    return trailer?.key || null;
+}
 
 interface CastMember {
     id: number;
@@ -47,6 +70,7 @@ export default async function MoviePage({
     params: Promise<{ id: string }>
 }) {
     const { id } = await params;
+    const trailerKey = await getMovieTrailer(id);
 
     const [movie, cast] = await Promise.all([
         GetMovieById(id) as Promise<Movie>,
@@ -132,9 +156,11 @@ export default async function MoviePage({
 
                 <div className="flex items-center gap-4 mt-2">
 
-                    <button className="flex items-center justify-center gap-2 bg-white text-black px-8 py-3.5 rounded-md font-bold text-base hover:bg-white/80 transition shadow-lg">
-                        ▶ Play
-                    </button>
+                    {trailerKey? (
+                        <TrailerModal trailerKey={trailerKey} />
+                    ) : <button disabled className="bg-white/50 text-black px-8 py-3.5 rounded-md font-bold cursor-not-allowed">
+                        ▶ Don't have Trailer
+                    </button>}
 
                     <button className="flex items-center justify-center gap-2 bg-[#6d6d6e]/70 text-white px-8 py-3.5 rounded-md font-bold text-base hover:bg-[#6d6d6e]/50 transition backdrop-blur-md">
                         + My List
