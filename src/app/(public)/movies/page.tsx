@@ -1,6 +1,6 @@
 'use client'
 
-import Card from "@/src/app/components/Card";
+import MovieRow from "../../components/MovieRow";
 import { useState, useEffect, useRef } from "react";
 
 interface Movie {
@@ -55,26 +55,6 @@ export default function Movie() {
         loadData();
     }, []);
 
-    const rightArrow = (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-        </svg>
-    );
-
-    const leftArrow = (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-        </svg>
-    );
-
-    const rollRight = () => {
-        if (scrollRef.current) scrollRef.current.scrollBy({ left: 400, behavior: 'smooth' });
-    };
-
-    const rollLeft = () => {
-        if (scrollRef.current) scrollRef.current.scrollBy({ left: -400, behavior: 'smooth' });
-    };
-
     if (loading) {
         return (
             <div className="min-h-screen bg-[#141414] flex items-center justify-center text-white text-xl font-medium">
@@ -113,98 +93,9 @@ export default function Movie() {
                 )}
             </header>
             <section className="relative px-6 sm:px-12 py-8">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-100 mb-4">Discovery</h2>
-                
-                <div className="group relative">
-                    <button 
-                        onClick={rollLeft} 
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                    >
-                        {leftArrow}
-                    </button>
-                    <div 
-                        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-none scroll-smooth" 
-                        ref={scrollRef}
-                    >
-                        {movies.map((movie) => (
-                            <div key={movie.id} className="flex-none w-36 sm:w-48 snap-start transition transform hover:scale-105 duration-300">
-                                <Card
-                                    id={movie.id}
-                                    title={movie.title}
-                                    urlImage={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    <button 
-                        onClick={rollRight} 
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                    >
-                        {rightArrow}
-                    </button>
-                </div>
-
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-100 mb-4 mt-16">Top Rated</h2>
-
-                <div className="group relative">
-                    <button 
-                        onClick={rollLeft} 
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                    >
-                        {leftArrow}
-                    </button>
-                    <div 
-                        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-none scroll-smooth" 
-                        ref={scrollRef}
-                    >
-                        {toprateds.map((toprated) => (
-                            <div key={toprated.id} className="flex-none w-36 sm:w-48 snap-start transition transform hover:scale-105 duration-300">
-                                <Card
-                                    id={toprated.id}
-                                    title={toprated.title}
-                                    urlImage={`https://image.tmdb.org/t/p/w500${toprated.poster_path}`}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    <button 
-                        onClick={rollRight} 
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                    >
-                        {rightArrow}
-                    </button>
-                </div>
-
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-100 mb-4 mt-16">Up coming</h2>
-
-                <div className="group relative">
-                    <button 
-                        onClick={rollLeft} 
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                    >
-                        {leftArrow}
-                    </button>
-                    <div 
-                        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-none scroll-smooth" 
-                        ref={scrollRef}
-                    >
-                        {upcomings.map((toprated) => (
-                            <div key={toprated.id} className="flex-none w-36 sm:w-48 snap-start transition transform hover:scale-105 duration-300">
-                                <Card
-                                    id={toprated.id}
-                                    title={toprated.title}
-                                    urlImage={`https://image.tmdb.org/t/p/w500${toprated.poster_path}`}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    <button 
-                        onClick={rollRight} 
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                    >
-                        {rightArrow}
-                    </button>
-                </div>
+                <MovieRow title="Discoery" movies={movies}/>
+                <MovieRow title="Top Rated" movies={toprateds}/>
+                <MovieRow title="Up coming" movies={upcomings}/>
             </section>
         </div>
     );
