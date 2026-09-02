@@ -8,8 +8,6 @@ export default function Topbar() {
     const [menu, setMenu] = useState(false)
     const [isDark, setIsDark] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
-
-    // O hook useRouter deve obrigatoriamente ficar dentro do componente
     const router = useRouter();
 
     const handleSearchSubmit = (e: React.FormEvent) => {
@@ -94,8 +92,8 @@ export default function Topbar() {
                         </div>
 
                         <nav className="flex flex-col gap-2 w-full pt-2 border-t border-gray-200 dark:border-gray-800">
-                            <Link href="/movies" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Movies
+                            <Link href="/home" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
+                                Home
                             </Link>
                             <Link href="/favorites" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
                                 Favorites

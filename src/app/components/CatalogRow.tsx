@@ -7,18 +7,15 @@ interface Catalog {
     id: number;
     title: string;
     poster_path: string;
-    backdrop_path?: string;
-    overview?: string;
-    vote_average: number;
-    release_date: string;
+    media_type?: string;
 }
 
 interface CatalogRowProps {
     title: string;
-    catalogs: Catalog[]
+    catalogs: Catalog[];
 }
 
-export default function catalogRow({ title, catalogs }: CatalogRowProps) {
+export default function CatalogRow({ title, catalogs }: CatalogRowProps) {
     const rowRef = useRef<HTMLDivElement>(null);
 
     const rightArrow = (
@@ -61,6 +58,7 @@ export default function catalogRow({ title, catalogs }: CatalogRowProps) {
                                 id={catalog.id}
                                 title={catalog.title}
                                 urlImage={`https://image.tmdb.org/t/p/w500${catalog.poster_path}`}
+                                media_type={catalog.media_type || ""}
                             />
                         </div>
                     ))}

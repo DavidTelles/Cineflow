@@ -1,11 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-    const searchParams = request.nextUrl.searchParams;
-    const windowParam = searchParams.get("window");
-    const timeWindow = windowParam === "week" ? "week" : "day";
+export async function GET() {
 
-    const tmdbUrl = `https://api.themoviedb.org/3/trending/all/${timeWindow}`;
+    const tmdbUrl = `https://api.themoviedb.org/3/trending/all/day`;
 
     try {
         const response = await fetch(tmdbUrl, {

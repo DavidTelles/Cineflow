@@ -1,4 +1,4 @@
-import GetMovieById from "@/src/services/tmdb"
+import GetMovieById from "@/src/services/get-movie"
 
 interface CastMember {
     id: number;

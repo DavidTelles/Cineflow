@@ -4,9 +4,11 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Card from '@/src/app/components/Card';
 
-interface Movie {
+interface MediaItem {
     id: number;
-    title: string;
+    media_type: string;
+    title?: string;
+    name?: string;
     poster_path: string;
 }
 
@@ -14,13 +16,13 @@ function SearchContent() {
     const searchParams = useSearchParams();
     const query = searchParams.get('query');
 
-    const [movies, setMovies] = useState<Movie[]>([]);
+    const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchSearchResults() {
             if (!query) {
-                setMovies([]);
+                setMediaItems([]);
                 setLoading(false);
                 return;
             }
@@ -29,7 +31,7 @@ function SearchContent() {
             try {
                 const response = await fetch(`/api/multi/search?query=${encodeURIComponent(query)}`);
                 const json = await response.json();
-                setMovies(json.data?.results || []);
+                setMediaItems(json.data?.results || []);
             } catch (error) {
                 console.error('Error:', error);
             } finally {
@@ -41,7 +43,16 @@ function SearchContent() {
     }, [query]);
 
     if (loading) {
-        return <div className="p-8 text-center text-white">Loading...</div>;
+        return (
+            <div className="min-h-screen bg-[#141414] flex items-center justify-center text-white">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+                    <p className="text-sm text-gray-400">
+                        Loading catalog...
+                    </p>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -51,23 +62,23 @@ function SearchContent() {
                     {query ? `Results for: "${query}"` : 'Write for search'}
                 </h1>
 
-                {movies.length === 0 ? (
-                    <p className="text-gray-400">Not found movie.</p>
+                {mediaItems.length === 0 ? (
+                    <p className="text-gray-400">Not found items.</p>
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
-                        {movies.map((movie) => (
-                            <div key={movie.id} className="w-full max-w-[200px]">
-                                <Card
-                                    id={movie.id}
-                                    title={movie.title}
-                                    urlImage={
-                                        movie.poster_path
-                                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                                            : 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'
-                                    }
-                                />
-                            </div>
-                        ))}
+                        {mediaItems
+                            .filter((item) => item.media_type !== 'person')
+                            .map((item) => (
+                                <div key={item.id} className="w-full max-w-[200px]">
+                                    <Card
+                                        id={item.id}
+                                        title={item.title}
+                                        name={item.name}
+                                        media_type={item.media_type}
+                                        urlImage={ item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'}
+                                    />
+                                </div>
+                            ))}
                     </div>
                 )}
             </div>

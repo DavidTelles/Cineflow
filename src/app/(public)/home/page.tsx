@@ -10,12 +10,13 @@ interface Catalog {
     backdrop_path?: string;
     overview?: string;
     vote_average: number;
-    release_date: string;
+    release_date?: string;
+    media_type?: string;
 }
 
 type FilterType = 'all' | 'movies' | 'series';
 
-export default function Catalog() {
+export default function Home() {
 
     const [filter, setFilter] = useState<FilterType>('all');
 
@@ -29,56 +30,52 @@ export default function Catalog() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
         async function loadData() {
-
             try {
+                const endpoints = [
+                    "/api/multi?window=day",
+                    "/api/movie",
+                    "/api/serie",
+                    "/api/movie/trending",
+                    "/api/movie/top-rated",
+                    "/api/movie/upcoming"
+                ];
+
+                const responses = await Promise.all(
+                    endpoints.map((endpoint) => fetch(endpoint))
+                );
+
+                const data = await Promise.all(
+                    responses.map((res) => (res.ok ? res.json() : { results: [] }))
+                );
 
                 const [
-                    resTrending,
-                    resDiscoveryMovies,
-                    resDiscoverySeries,
-                    resFeatured,
-                    resToprated,
-                    resUpcoming
-                ] = await Promise.all([
-                    fetch("/api/multi?window=day"),
-                    fetch("/api/movies"),
-                    fetch("/api/series"),
-                    fetch("/api/movies/trending"),
-                    fetch("/api/movies/top-rated"),
-                    fetch("/api/movies/upcoming"),
-                ]);
-
-                const jsonTrending = await resTrending.json();
-                const jsonDiscoveryMovies = await resDiscoveryMovies.json();
-                const jsonDiscoverySeries = await resDiscoverySeries.json();
-                const jsonFeatured = await resFeatured.json();
-                const jsonToprated = await resToprated.json();
-                const jsonUpcoming = await resUpcoming.json();
+                    jsonTrending,
+                    jsonDiscoveryMovies,
+                    jsonDiscoverySeries,
+                    jsonFeatured,
+                    jsonToprated,
+                    jsonUpcoming
+                ] = data;
 
                 setTrending(jsonTrending.results || []);
                 setDiscoveryMovies(jsonDiscoveryMovies.results || []);
                 setDiscoverySeries(jsonDiscoverySeries.results || []);
+                setFeatured(jsonFeatured.results?.[0] || null);
                 setToprated(jsonToprated.results || []);
                 setUpcoming(jsonUpcoming.results || []);
-
-                setFeatured(jsonFeatured.results?.[0] || null);
-
             } catch (error) {
-
                 console.error('Fetch Error!', error);
-
             } finally {
-
                 setLoading(false);
-
             }
         }
-
         loadData();
-
     }, []);
+
+    const seriesTrending = trending.filter(
+        (item) => item.media_type === 'serie' || item.media_type === 'tv'
+    );
 
     if (loading) {
         return (
@@ -92,6 +89,8 @@ export default function Catalog() {
             </div>
         );
     }
+
+    const featuredType = featured?.media_type === 'tv' ? 'serie' : (featured?.media_type || 'movie');
 
     return (
         <div className="min-h-screen bg-[#141414] text-white overflow-x-hidden">
@@ -109,7 +108,6 @@ export default function Catalog() {
                         : 'none'
                 }}
             >
-
                 {featured && (
                     <div className="w-full max-w-7xl mx-auto z-10">
                         <div className="max-w-2xl space-y-5">
@@ -124,7 +122,7 @@ export default function Catalog() {
                             </p>
                             <div className="flex gap-3 pt-2">
                                 <a
-                                    href={`/movies/${featured.id}`}
+                                    href={`/home/${featuredType}/${featured.id}`}
                                     className="bg-white text-black px-7 py-3 rounded-md font-bold hover:bg-gray-200 transition"
                                 >
                                     + More Info
@@ -189,7 +187,6 @@ export default function Catalog() {
             </nav>
 
             <main className="max-w-full mx-auto px-6 sm:px-12 py-10">
-
                 {filter === 'all' && (
                     <div className="space-y-14">
                         <CatalogRow title="Discovery Movies" catalogs={discoveryMovies} />
@@ -211,7 +208,7 @@ export default function Catalog() {
                 {filter === 'series' && (
                     <div className="space-y-14">
                         <CatalogRow title="Discovery Series" catalogs={discoverySeries} />
-                        <CatalogRow title="Recommendations" catalogs={trending} />
+                        <CatalogRow title="Recommendations" catalogs={seriesTrending} />
                     </div>
                 )}
             </main>
