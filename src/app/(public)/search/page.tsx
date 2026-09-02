@@ -75,7 +75,7 @@ function SearchContent() {
                                         title={item.title}
                                         name={item.name}
                                         media_type={item.media_type}
-                                        urlImage={ item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'}
+                                        urlImage={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'}
                                     />
                                 </div>
                             ))}
@@ -88,6 +88,8 @@ function SearchContent() {
 
 export default function SearchPage() {
     return (
-        <SearchContent />
+        <Suspense fallback={<div>Loading...</div>}>
+            <SearchContent />
+        </Suspense>
     );
 }
