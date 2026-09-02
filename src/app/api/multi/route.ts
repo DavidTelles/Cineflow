@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-    const tmdbUrl = "https://api.themoviedb.org/3/discover/movie";
+export async function GET(request: NextRequest) {
+    const searchParams = request.nextUrl.searchParams;
+    const windowParam = searchParams.get("window");
+    const timeWindow = windowParam === "week" ? "week" : "day";
+
+    const tmdbUrl = `https://api.themoviedb.org/3/trending/all/${timeWindow}`;
 
     try {
         const response = await fetch(tmdbUrl, {
@@ -14,19 +18,14 @@ export async function GET() {
 
         if (!response.ok) {
             return NextResponse.json(
-                { error: "Falha ao buscar séries do TMDB" },
+                { error: "Falha ao buscar dados do TMDB" },
                 { status: response.status }
             );
         }
 
         const data = await response.json();
-
-        const formattedResults = data.results?.map((item: any) => ({
-            ...item,
-            title: item.title || item.name,
-        }));
-
-        return NextResponse.json({ ...data, results: formattedResults });
+        
+        return NextResponse.json(data);
     } catch (error) {
         console.error("Error:", error);
         return NextResponse.json(

@@ -27,7 +27,7 @@ function SearchContent() {
 
             setLoading(true);
             try {
-                const response = await fetch(`/api/movies?query=${encodeURIComponent(query)}`);
+                const response = await fetch(`/api/multi/search?query=${encodeURIComponent(query)}`);
                 const json = await response.json();
                 setMovies(json.data?.results || []);
             } catch (error) {

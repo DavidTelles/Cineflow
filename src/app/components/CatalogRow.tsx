@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Card from "./Card";
 
-interface Movie {
+interface Catalog {
     id: number;
     title: string;
     poster_path: string;
@@ -13,12 +13,12 @@ interface Movie {
     release_date: string;
 }
 
-interface MovieRowProps {
+interface CatalogRowProps {
     title: string;
-    movies: Movie[]
+    catalogs: Catalog[]
 }
 
-export default function MovieRow({ title, movies }: MovieRowProps) {
+export default function catalogRow({ title, catalogs }: CatalogRowProps) {
     const rowRef = useRef<HTMLDivElement>(null);
 
     const rightArrow = (
@@ -55,12 +55,12 @@ export default function MovieRow({ title, movies }: MovieRowProps) {
                     className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-none scroll-smooth"
                     ref={rowRef}
                 >
-                    {movies.map((movie) => (
-                        <div key={movie.id} className="flex-none w-36 sm:w-48 snap-start transition transform hover:scale-105 duration-300">
+                    {catalogs.map((catalog) => (
+                        <div key={catalog.id} className="flex-none w-36 sm:w-48 snap-start transition transform hover:scale-105 duration-300">
                             <Card
-                                id={movie.id}
-                                title={movie.title}
-                                urlImage={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                id={catalog.id}
+                                title={catalog.title}
+                                urlImage={`https://image.tmdb.org/t/p/w500${catalog.poster_path}`}
                             />
                         </div>
                     ))}

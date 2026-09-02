@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    const tmdbUrl = "https://api.themoviedb.org/3/discover/movie";
+    const tmdbUrl = "https://api.themoviedb.org/3/discover/tv";
 
     try {
         const response = await fetch(tmdbUrl, {
