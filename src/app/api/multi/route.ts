@@ -15,7 +15,7 @@ export async function GET() {
 
         if (!response.ok) {
             return NextResponse.json(
-                { error: "Falha ao buscar dados do TMDB" },
+                { error: "Failed to fetch data from TMDB" },
                 { status: response.status }
             );
         }

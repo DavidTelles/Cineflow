@@ -162,10 +162,6 @@ export default async function MoviePage({
                         ▶ Don't have Trailer
                     </button>}
 
-                    <button className="flex items-center justify-center gap-2 bg-[#6d6d6e]/70 text-white px-8 py-3.5 rounded-md font-bold text-base hover:bg-[#6d6d6e]/50 transition backdrop-blur-md">
-                        + My List
-                    </button>
-
                 </div>
 
                 <div className="max-w-2xl mt-4">

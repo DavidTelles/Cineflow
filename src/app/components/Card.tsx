@@ -15,16 +15,16 @@ export default function Card({ id, title, name, urlImage, media_type = 'movie' }
     if (media_type === 'person') return null;
 
     return (
-        <a href={`/home/${type}/${id}`}>
-            <div className="relative w-45 h-80 m-3 overflow-hidden rounded-xl shadow-lg">
+        <a href={`/home/${type}/${id}`} className="block">
+            <div className="relative w-32 h-48 xs:w-36 xs:h-54 sm:w-40 sm:h-60 md:w-44 md:h-64 lg:w-48 lg:h-72 overflow-hidden rounded-lg sm:rounded-xl shadow-lg">
                 <img
                     src={urlImage}
                     alt={displayTitle}
                     className="h-full w-full object-cover"
                 />
 
-                <div className="absolute flex items-end bg-gradient-to-t from-black via-black/60 to-transparent opacity-0 hover:opacity-100 inset-0 transition-opacity duration-300 hover:cursor-pointer">
-                    <p className="p-4 text-sm leading-relaxed text-white">
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black via-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
+                    <p className="p-3 sm:p-4 text-xs sm:text-sm leading-relaxed text-white">
                         {displayTitle}
                     </p>
                 </div>

@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
         );
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('Erro retornado pelo TMDB:', errorText);
+            console.error('Error returned by TMDB:', errorText);
             return NextResponse.json({ error: 'Failed to fetch TMDB data', details: errorText }, { status: response.status });
         }
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ message: 'data: ', data });
         
     } catch (error) {
-        console.error('Error no Servidor Interno:', error);
+        console.error('Internal Server Error:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

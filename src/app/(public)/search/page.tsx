@@ -88,8 +88,6 @@ function SearchContent() {
 
 export default function SearchPage() {
     return (
-        <Suspense fallback={<div className="p-8 text-center text-white">Loading...</div>}>
-            <SearchContent />
-        </Suspense>
+        <SearchContent />
     );
 }

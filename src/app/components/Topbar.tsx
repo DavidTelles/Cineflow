@@ -95,21 +95,6 @@ export default function Topbar() {
                             <Link href="/home" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
                                 Home
                             </Link>
-                            <Link href="/favorites" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Favorites
-                            </Link>
-                            <Link href="/watchlist" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Watchlist
-                            </Link>
-                            <Link href="/profile" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Profile
-                            </Link>
-                            <Link href="/login" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Login
-                            </Link>
-                            <Link href="/register" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Register
-                            </Link>
                         </nav>
                     </div>
 

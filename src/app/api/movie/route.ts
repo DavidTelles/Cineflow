@@ -14,7 +14,7 @@ export async function GET() {
 
         if (!response.ok) {
             return NextResponse.json(
-                { error: "Falha ao buscar séries do TMDB" },
+                { error: "Failed to fetch movies from TMDB" },
                 { status: response.status }
             );
         }
@@ -31,7 +31,7 @@ export async function GET() {
     } catch (error) {
         console.error("Error:", error);
         return NextResponse.json(
-            { error: "Erro interno no servidor" },
+            { error: "Internal server error" },
             { status: 500 }
         );
     }
