@@ -45,29 +45,32 @@ function SearchContent() {
     }
 
     return (
-        <main className="p-6">
-            <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                {query ? `Results for: "${query}"` : 'Write for search'}
-            </h1>
+        <main className="min-h-screen bg-[#141414] p-6 sm:p-12 text-white">
+            <div className="max-w-7xl mx-auto">
+                <h1 className="text-2xl font-bold mb-6 text-gray-100">
+                    {query ? `Results for: "${query}"` : 'Write for search'}
+                </h1>
 
-            {movies.length === 0 ? (
-                <p className="text-gray-500">Not found movie.</p>
-            ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                    {movies.map((movie) => (
-                        <Card
-                            key={movie.id}
-                            id={movie.id}
-                            title={movie.title}
-                            urlImage={
-                                movie.poster_path
-                                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                                    : ''
-                            }
-                        />
-                    ))}
-                </div>
-            )}
+                {movies.length === 0 ? (
+                    <p className="text-gray-400">Not found movie.</p>
+                ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
+                        {movies.map((movie) => (
+                            <div key={movie.id} className="w-full max-w-[200px]">
+                                <Card
+                                    id={movie.id}
+                                    title={movie.title}
+                                    urlImage={
+                                        movie.poster_path
+                                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                                            : 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'
+                                    }
+                                />
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </main>
     );
 }
