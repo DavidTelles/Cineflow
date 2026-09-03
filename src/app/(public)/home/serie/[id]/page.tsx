@@ -177,7 +177,7 @@ export default async function SeriePage({
                                 <Card
                                     key={recommendation.id}
                                     id={recommendation.id}
-                                    title={recommendation.title}
+                                    title={recommendation.name}
                                     urlImage={
                                         recommendation.poster_path
                                             ? `https://image.tmdb.org/t/p/w500${recommendation.poster_path}`
