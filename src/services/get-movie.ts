@@ -1,4 +1,4 @@
-export default async function GetMovieById(id: string) {
+export async function GetMovieById(id: string) {
 
     const response = await fetch(
         `https://api.themoviedb.org/3/movie/${id}`,
