@@ -78,37 +78,19 @@ export default function CatalogRow({ title, catalogs }: CatalogRowProps) {
             </h2>
 
             <div className="group relative">
-                <button
-                    onClick={rollLeft}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                >
+                <button onClick={rollLeft} className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm">
                     {leftArrow}
                 </button>
 
-                <div
-                    ref={rowRef}
-                    className="flex gap-2 sm:gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-3 sm:pb-4 scrollbar-none scroll-smooth"
-                >
+                <div ref={rowRef} className="flex gap-2 sm:gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory pb-3 sm:pb-4 scrollbar-none scroll-smooth">
                     {catalogs.map((catalog) => (
-                        <div
-                            key={catalog.id}
-                            className="flex-none snap-start transition-transform hover:scale-105 duration-300"
-                        >
-                            <Card
-                                id={catalog.id}
-                                title={catalog.title}
-                                name={catalog.name}
-                                urlImage={`https://image.tmdb.org/t/p/w500${catalog.poster_path}`}
-                                media_type={catalog.media_type}
-                            />
+                        <div key={catalog.id} className="flex-none snap-start transition-transform hover:scale-105 duration-300" >
+                            <Card id={catalog.id} title={catalog.title} name={catalog.name} urlImage={`https://image.tmdb.org/t/p/w500${catalog.poster_path}`} media_type={catalog.media_type} />
                         </div>
                     ))}
                 </div>
 
-                <button
-                    onClick={rollRight}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-                >
+                <button onClick={rollRight} className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 bg-black/70 hover:bg-black text-white rounded-full transition shadow-xl opacity-0 group-hover:opacity-100 backdrop-blur-sm" >
                     {rightArrow}
                 </button>
             </div>

@@ -101,7 +101,6 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-[#141414] text-white overflow-x-hidden">
-
             <header
                 className="relative h-[65vh] sm:h-[80vh] w-full bg-cover bg-center bg-no-repeat flex items-end px-5 sm:px-12 lg:px-20 pb-10 sm:pb-16"
                 style={{
@@ -119,7 +118,6 @@ export default function Home() {
                 {featured && (
                     <div className="w-full max-w-7xl mx-auto z-10">
                         <div className="max-w-2xl space-y-4 sm:space-y-5">
-
                             <span className="text-xs sm:text-sm font-semibold text-gray-300 uppercase tracking-widest">
                                 Featured
                             </span>
@@ -133,50 +131,31 @@ export default function Home() {
                             </p>
 
                             <div className="flex gap-3 pt-1 sm:pt-2">
-
-                                <a
-                                    href={`/home/${featuredType}/${featured.id}`}
-                                    className="bg-white text-black px-5 sm:px-7 py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-bold hover:bg-gray-200 transition"
-                                >
+                                <a href={`/home/${featuredType}/${featured.id}`} className="bg-white text-black px-5 sm:px-7 py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-bold hover:bg-gray-200 transition" >
                                     + More Info
                                 </a>
-
                             </div>
-
                         </div>
                     </div>
                 )}
             </header>
 
             <nav className="sticky top-0 z-30 bg-[#141414]/95 backdrop-blur-md border-b border-white/5">
-
                 <div className="max-w-7xl mx-auto px-5 sm:px-12">
-
                     <div className="flex items-center gap-4 sm:gap-8 h-14 sm:h-16">
 
-                        <span className="text-sm font-semibold text-gray-500 hidden sm:block">
-                            Browse
-                        </span>
-
                         <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-hide">
-
-                            <button
-                                onClick={() => setFilter('all')}
+                            <button onClick={() => setFilter('all')}
                                 className={`
                                     shrink-0 px-4 sm:px-5 py-1.5 sm:py-2
                                     rounded-full text-xs sm:text-sm font-semibold
                                     transition-all duration-200
-                                    ${filter === 'all'
-                                        ? 'bg-white text-black'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/10'
-                                    }
-                                `}
-                            >
+                                    ${filter === 'all' ? 'bg-white text-black' : 'text-gray-400 hover:text-white hover:bg-white/10' }
+                                `} >
                                 All
                             </button>
 
-                            <button
-                                onClick={() => setFilter('movies')}
+                            <button onClick={() => setFilter('movies')}
                                 className={`
                                     shrink-0 px-4 sm:px-5 py-1.5 sm:py-2
                                     rounded-full text-xs sm:text-sm font-semibold
@@ -185,13 +164,11 @@ export default function Home() {
                                         ? 'bg-white text-black'
                                         : 'text-gray-400 hover:text-white hover:bg-white/10'
                                     }
-                                `}
-                            >
+                                `} >
                                 Movies
                             </button>
 
-                            <button
-                                onClick={() => setFilter('series')}
+                            <button onClick={() => setFilter('series')}
                                 className={`
                                     shrink-0 px-4 sm:px-5 py-1.5 sm:py-2
                                     rounded-full text-xs sm:text-sm font-semibold
@@ -200,91 +177,42 @@ export default function Home() {
                                         ? 'bg-white text-black'
                                         : 'text-gray-400 hover:text-white hover:bg-white/10'
                                     }
-                                `}
-                            >
+                                `} >
                                 Series
                             </button>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </nav>
 
             <main className="max-w-full mx-auto px-3 sm:px-6 md:px-12 py-7 sm:py-10">
 
                 {filter === 'all' && (
                     <div className="space-y-10 sm:space-y-14">
-
-                        <CatalogRow
-                            title="Discovery Movies"
-                            catalogs={discoveryMovies}
-                        />
-
-                        <CatalogRow
-                            title="Discovery Series"
-                            catalogs={discoverySeries}
-                        />
-
-                        <CatalogRow
-                            title="Recommendations"
-                            catalogs={trending}
-                        />
-
-                        <CatalogRow
-                            title="Top Rated"
-                            catalogs={toprateds}
-                        />
-
-                        <CatalogRow
-                            title="Up coming"
-                            catalogs={upcomings}
-                        />
-
+                        <CatalogRow title="Discovery Movies" catalogs={discoveryMovies} />
+                        <CatalogRow title="Discovery Series" catalogs={discoverySeries} />
+                        <CatalogRow title="Recommendations" catalogs={trending} />
+                        <CatalogRow title="Top Rated" catalogs={toprateds} />
+                        <CatalogRow title="Up coming" catalogs={upcomings} />
                     </div>
                 )}
 
                 {filter === 'movies' && (
                     <div className="space-y-10 sm:space-y-14">
-
-                        <CatalogRow
-                            title="Discovery Movies"
-                            catalogs={discoveryMovies}
-                        />
-
-                        <CatalogRow
-                            title="Top Rated"
-                            catalogs={toprateds}
-                        />
-
-                        <CatalogRow
-                            title="Up coming"
-                            catalogs={upcomings}
-                        />
-
+                        <CatalogRow title="Discovery Movies" catalogs={discoveryMovies} />
+                        <CatalogRow title="Top Rated" catalogs={toprateds} />
+                        <CatalogRow title="Up coming" catalogs={upcomings} />
                     </div>
                 )}
 
                 {filter === 'series' && (
                     <div className="space-y-10 sm:space-y-14">
-
-                        <CatalogRow
-                            title="Discovery Series"
-                            catalogs={discoverySeries}
-                        />
-
-                        <CatalogRow
-                            title="Recommendations"
-                            catalogs={seriesTrending}
-                        />
-
+                        <CatalogRow title="Discovery Series" catalogs={discoverySeries} />
+                        <CatalogRow title="Recommendations" catalogs={seriesTrending} />
                     </div>
                 )}
 
             </main>
-
         </div>
     );
 }

@@ -1,14 +1,10 @@
-import { GetSerieById } from "@/src/services/get-serie";
+import { GetById } from "@/src/services/get";
 import { GetRecommendations } from "@/src/services/get-recommendations";
+import { GetCredits } from "@/src/services/get-credits";
+import { GetTrailer } from "@/src/services/get-trailer";
 import Cast from "@/src/app/components/Cast";
 import TrailerModal from "@/src/app/components/TrailerModal";
 import Card from "@/src/app/components/Card";
-
-interface CastMember {
-    id: number;
-    name: string;
-    profile_path?: string;
-}
 
 interface Genre {
     id: number;
@@ -26,45 +22,6 @@ interface Serie {
     genres?: Genre[];
 }
 
-async function getSerieTrailer(id: string): Promise<string | null> {
-    const response = await fetch(
-        `https://api.themoviedb.org/3/tv/${id}/videos`,
-        {
-            headers: {
-                Authorization: `Bearer ${process.env.TMDB_API_TOKEN}`,
-                accept: "application/json",
-            },
-        }
-    );
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
-    const trailer = data.results?.find(
-        (video: { type?: string; site?: string; key?: string }) =>
-            video.type === "Trailer" && video.site === "YouTube"
-    );
-
-    return trailer?.key || null;
-}
-
-async function getSerieCredits(id: string): Promise<CastMember[]> {
-    const response = await fetch(
-        `https://api.themoviedb.org/3/tv/${id}/credits`,
-        {
-            headers: {
-                Authorization: `Bearer ${process.env.TMDB_API_TOKEN}`,
-                accept: "application/json",
-            },
-        }
-    );
-
-    if (!response.ok) return [];
-
-    const data = await response.json();
-    return data.cast || [];
-}
-
 export default async function SeriePage({
     params,
 }: {
@@ -73,9 +30,9 @@ export default async function SeriePage({
     const { id } = await params;
 
     const [serie, cast, trailerKey, recommendations] = await Promise.all([
-        GetSerieById(id) as Promise<Serie>,
-        getSerieCredits(id),
-        getSerieTrailer(id),
+        GetById(id, 'tv') as Promise<Serie>,
+        GetCredits(id, 'tv'),
+        GetTrailer(id, 'tv'),
         GetRecommendations(id, 'tv'),
     ]);
 
@@ -101,13 +58,7 @@ export default async function SeriePage({
     return (
         <div className="min-h-screen bg-[#141414] text-white relative">
             <div className="absolute inset-0 h-screen w-full overflow-hidden z-0 pointer-events-none">
-                {backdropUrl && (
-                    <img
-                        src={backdropUrl}
-                        alt={serie.name}
-                        className="w-full h-full object-cover object-center opacity-60"
-                    />
-                )}
+                {backdropUrl && ( <img src={backdropUrl} alt={serie.name} className="w-full h-full object-cover object-center opacity-60" /> )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#141414] via-transparent to-transparent" />
             </div>
@@ -145,10 +96,7 @@ export default async function SeriePage({
                     {trailerKey ? (
                         <TrailerModal trailerKey={trailerKey} />
                     ) : (
-                        <button
-                            disabled
-                            className="bg-white/50 text-black px-8 py-3.5 rounded-md font-bold cursor-not-allowed"
-                        >
+                        <button disabled className="bg-white/50 text-black px-8 py-3.5 rounded-md font-bold cursor-not-allowed">
                             ▶ Don't have Trailer
                         </button>
                     )}
@@ -174,11 +122,7 @@ export default async function SeriePage({
                         <h2 className="text-2xl font-bold tracking-wide">Recommendation</h2>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-30">
                             {recommendations.map((recommendation) => (
-                                <Card
-                                    key={recommendation.id}
-                                    id={recommendation.id}
-                                    title={recommendation.name}
-                                    urlImage={
+                                <Card key={recommendation.id} id={recommendation.id} title={recommendation.name} urlImage={
                                         recommendation.poster_path
                                             ? `https://image.tmdb.org/t/p/w500${recommendation.poster_path}`
                                             : ''
