@@ -17,7 +17,7 @@ interface Genre {
 
 interface Serie {
     id: number;
-    title: string;
+    name: string;
     poster_path: string;
     backdrop_path?: string;
     overview?: string;
@@ -104,7 +104,7 @@ export default async function SeriePage({
                 {backdropUrl && (
                     <img
                         src={backdropUrl}
-                        alt={serie.title}
+                        alt={serie.name}
                         className="w-full h-full object-cover object-center opacity-60"
                     />
                 )}
@@ -114,7 +114,7 @@ export default async function SeriePage({
 
             <div className="relative z-10 max-w-6xl mx-auto px-6 min-h-screen pb-16 pt-32 flex flex-col justify-end gap-6">
                 <h1 className="text-4xl md:text-6xl font-black tracking-wide drop-shadow-lg">
-                    {serie.title}
+                    {serie.name}
                 </h1>
 
                 <div className="flex items-center gap-4 text-sm md:text-base text-gray-300 font-medium">
