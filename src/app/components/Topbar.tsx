@@ -78,7 +78,7 @@ export default function Topbar() {
                         <div className="flex items-center justify-between w-full">
                             <h1 className="font-sans text-2xl font-bold">
                                 <Link href="/" onClick={() => setMenu(false)}>
-                                    Cine<span className="text-red-800">flow</span>
+                                    Cine<span className="text-fuchsia-900">flow</span>
                                 </Link>
                             </h1>
 
