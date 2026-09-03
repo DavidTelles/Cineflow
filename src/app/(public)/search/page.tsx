@@ -12,11 +12,12 @@ interface MediaItem {
     poster_path: string;
 }
 
-export default function SearchPage() {
+async function SearchContent() {
+    const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+
     const searchParams = useSearchParams();
     const query = searchParams.get('query');
 
-    const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -55,35 +56,42 @@ export default function SearchPage() {
         );
     }
 
+
+    return (
+        <main className="min-h-screen bg-[#141414] p-6 sm:p-12 text-white">
+            <div className="max-w-7xl mx-auto">
+                <h1 className="text-2xl font-bold mb-6 text-gray-100">
+                    {query ? `Results for: "${query}"` : 'Write for search'}
+                </h1>
+
+                {mediaItems.length === 0 ? (
+                    <p className="text-gray-400">Not found items.</p>
+                ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
+                        {mediaItems
+                            .filter((item) => item.media_type !== 'person')
+                            .map((item) => (
+                                <div key={item.id} className="w-full max-w-[200px]">
+                                    <Card
+                                        id={item.id}
+                                        title={item.title}
+                                        name={item.name}
+                                        media_type={item.media_type}
+                                        urlImage={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'}
+                                    />
+                                </div>
+                            ))}
+                    </div>
+                )}
+            </div>
+        </main>
+    )
+}
+
+export default function SearchPage() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <main className="min-h-screen bg-[#141414] p-6 sm:p-12 text-white">
-                <div className="max-w-7xl mx-auto">
-                    <h1 className="text-2xl font-bold mb-6 text-gray-100">
-                        {query ? `Results for: "${query}"` : 'Write for search'}
-                    </h1>
-
-                    {mediaItems.length === 0 ? (
-                        <p className="text-gray-400">Not found items.</p>
-                    ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
-                            {mediaItems
-                                .filter((item) => item.media_type !== 'person')
-                                .map((item) => (
-                                    <div key={item.id} className="w-full max-w-[200px]">
-                                        <Card
-                                            id={item.id}
-                                            title={item.title}
-                                            name={item.name}
-                                            media_type={item.media_type}
-                                            urlImage={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'}
-                                        />
-                                    </div>
-                                ))}
-                        </div>
-                    )}
-                </div>
-            </main>
+            <SearchContent />
         </Suspense>
     );
 }
