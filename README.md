@@ -1,6 +1,6 @@
 # 🎬 Cineflow
 
-> A Netflix-style web app built with Next.js for exploring, searching, and viewing details about movies and TV series, powered by the TMDB API.
+> A Web app built with Next.js for exploring, searching, and viewing details about movies and TV series, powered by the TMDB API.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.3-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-149ECA?style=for-the-badge&logo=react&logoColor=white)
