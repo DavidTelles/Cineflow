@@ -1,6 +1,6 @@
 # 🎬 Cineflow
 
-> A Netflix-style web app built with Next.js for exploring, searching, and viewing details about movies and TV series, powered by the TMDB API.
+> A web app built with Next.js for exploring, searching, and viewing details about movies and TV series, powered by the TMDB API.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.3-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-149ECA?style=for-the-badge&logo=react&logoColor=white)
@@ -18,6 +18,7 @@
 - **Search** — search across movies and TV series through a dedicated search page and API route.
 - **Detail pages** — immersive, streaming-style pages for movies and series with overview, rating, release date, genres, and cast.
 - **Trailer modal** — plays the official YouTube trailer for a title, when available.
+- **Recommendations** — "More like this" suggestions on detail pages, based on TMDB recommendations.
 - **Light/Dark theme** — theme switching via `next-themes`.
 
 ---
@@ -63,8 +64,8 @@ src/
 │   │   │   └── serie/[id]/     # Series detail page
 │   │   └── search/page.tsx     # Search results page
 │   ├── api/
-│   │   ├── movie/              # /api/movie, /trending, /top-rated, /upcoming, /[id], /[id]/credits
-│   │   ├── serie/               # /api/serie, /[id], /[id]/credits
+│   │   ├── movie/              # /api/movie, /trending, /top-rated, /upcoming, /[id], /[id]/credits, /[id]/recommendations
+│   │   ├── serie/               # /api/serie, /[id], /[id]/credits, /[id]/recommendations
 │   │   └── multi/               # /api/multi (trending, all), /multi/search
 │   ├── components/
 │   │   ├── Card.tsx             # Poster card
@@ -74,8 +75,10 @@ src/
 │   │   └── Topbar.tsx           # Nav bar + search + theme toggle
 │   └── globals.css
 └── services/
-    ├── get-movie.ts             # Server-side TMDB movie fetch helper
-    └── get-serie.ts             # Server-side TMDB series fetch helper
+    ├── get.ts                   # Generic server-side TMDB fetch-by-id helper
+    ├── get-credits.ts           # Fetches cast for a movie/series
+    ├── get-recommendations.ts   # Fetches "more like this" suggestions
+    └── get-trailer.ts           # Fetches the YouTube trailer key
 ```
 
 The app proxies all TMDB requests through its own `api/` route handlers rather than calling TMDB directly from the client, keeping the TMDB token server-side.
