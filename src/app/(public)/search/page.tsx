@@ -1,5 +1,4 @@
-'use client';
-
+'use client'
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Card from '@/src/app/components/Card';
@@ -12,7 +11,7 @@ interface MediaItem {
     poster_path: string;
 }
 
-async function SearchContent() {
+function SearchContent() {
     const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
 
     const searchParams = useSearchParams();
