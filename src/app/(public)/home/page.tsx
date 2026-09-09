@@ -1,5 +1,6 @@
 'use client'
 
+import { useLanguage } from "@/src/contexts/LanguageContext";
 import CatalogRow from "../../components/CatalogRow";
 import { useState, useEffect } from "react";
 
@@ -19,6 +20,7 @@ type FilterType = 'all' | 'movies' | 'series';
 export default function Home() {
 
     const [filter, setFilter] = useState<FilterType>('all');
+    const { language, t } = useLanguage();
 
     const [trending, setTrending] = useState<Catalog[]>([]);
     const [discoveryMovies, setDiscoveryMovies] = useState<Catalog[]>([]);
@@ -30,15 +32,18 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
+        if(!language) return;
+
         async function loadData() {
             try {
                 const endpoints = [
-                    "/api/multi?window=day",
-                    "/api/movie",
-                    "/api/serie",
-                    "/api/movie/trending",
-                    "/api/movie/top-rated",
-                    "/api/movie/upcoming"
+                    `/api/multi?window=day&lang=${language}`,
+                    `/api/movie?lang=${language}`,
+                    `/api/serie?lang=${language}`,
+                    `/api/movie/trending?lang=${language}`,
+                    `/api/movie/top-rated?lang=${language}`,
+                    `/api/movie/upcoming?lang=${language}`
                 ];
 
                 const responses = await Promise.all(
@@ -75,7 +80,7 @@ export default function Home() {
         }
 
         loadData();
-    }, []);
+    }, [language]);
 
     const seriesTrending = trending.filter(
         (item) => item.media_type === 'serie' || item.media_type === 'tv'
@@ -88,7 +93,7 @@ export default function Home() {
                     <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
 
                     <p className="text-sm text-gray-400">
-                        Loading catalog...
+                        {t.loadingCatalog}
                     </p>
                 </div>
             </div>
@@ -119,7 +124,7 @@ export default function Home() {
                     <div className="w-full max-w-7xl mx-auto z-10">
                         <div className="max-w-2xl space-y-4 sm:space-y-5">
                             <span className="text-xs sm:text-sm font-semibold text-gray-300 uppercase tracking-widest">
-                                Featured
+                                {t.featured}
                             </span>
 
                             <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-tight">
@@ -132,7 +137,7 @@ export default function Home() {
 
                             <div className="flex gap-3 pt-1 sm:pt-2">
                                 <a href={`/home/${featuredType}/${featured.id}`} className="bg-white text-black px-5 sm:px-7 py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-bold hover:bg-gray-200 transition" >
-                                    + More Info
+                                    + {t.moreInfo}
                                 </a>
                             </div>
                         </div>
@@ -152,7 +157,7 @@ export default function Home() {
                                     transition-all duration-200
                                     ${filter === 'all' ? 'bg-white text-black' : 'text-gray-400 hover:text-white hover:bg-white/10' }
                                 `} >
-                                All
+                                {t.all}
                             </button>
 
                             <button onClick={() => setFilter('movies')}
@@ -165,7 +170,7 @@ export default function Home() {
                                         : 'text-gray-400 hover:text-white hover:bg-white/10'
                                     }
                                 `} >
-                                Movies
+                                {t.movies}
                             </button>
 
                             <button onClick={() => setFilter('series')}
@@ -178,7 +183,7 @@ export default function Home() {
                                         : 'text-gray-400 hover:text-white hover:bg-white/10'
                                     }
                                 `} >
-                                Series
+                                {t.series}
                             </button>
                         </div>
                     </div>
@@ -189,26 +194,26 @@ export default function Home() {
 
                 {filter === 'all' && (
                     <div className="space-y-10 sm:space-y-14">
-                        <CatalogRow title="Discovery Movies" catalogs={discoveryMovies} />
-                        <CatalogRow title="Discovery Series" catalogs={discoverySeries} />
-                        <CatalogRow title="Recommendations" catalogs={trending} />
-                        <CatalogRow title="Top Rated" catalogs={toprateds} />
-                        <CatalogRow title="Up coming" catalogs={upcomings} />
+                        <CatalogRow title={t.discoveryMovies} catalogs={discoveryMovies} />
+                        <CatalogRow title={t.discoverySeries} catalogs={discoverySeries} />
+                        <CatalogRow title={t.recommendations} catalogs={trending} />
+                        <CatalogRow title={t.topRated} catalogs={toprateds} />
+                        <CatalogRow title={t.upcoming} catalogs={upcomings} />
                     </div>
                 )}
 
                 {filter === 'movies' && (
                     <div className="space-y-10 sm:space-y-14">
-                        <CatalogRow title="Discovery Movies" catalogs={discoveryMovies} />
-                        <CatalogRow title="Top Rated" catalogs={toprateds} />
-                        <CatalogRow title="Up coming" catalogs={upcomings} />
+                        <CatalogRow title={t.discoveryMovies} catalogs={discoveryMovies} />
+                        <CatalogRow title={t.topRated} catalogs={toprateds} />
+                        <CatalogRow title={t.upcoming} catalogs={upcomings} />
                     </div>
                 )}
 
                 {filter === 'series' && (
                     <div className="space-y-10 sm:space-y-14">
-                        <CatalogRow title="Discovery Series" catalogs={discoverySeries} />
-                        <CatalogRow title="Recommendations" catalogs={seriesTrending} />
+                        <CatalogRow title={t.discoverySeries} catalogs={discoverySeries} />
+                        <CatalogRow title={t.recommendations} catalogs={seriesTrending} />
                     </div>
                 )}
 

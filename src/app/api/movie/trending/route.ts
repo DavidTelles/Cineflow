@@ -1,13 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: NextRequest) {
+    const language = request.nextUrl.searchParams.get("lang") || "en-US";
     const response = await fetch(
-        "https://api.themoviedb.org/3/trending/movie/day",
+        `https://api.themoviedb.org/3/trending/movie/day?language=${language}`,
         {
             headers: {
                 Authorization: `Bearer ${process.env.TMDB_API_TOKEN}`,
                 accept: "application/json",
             },
+            cache: "no-store",
         }
     );
 

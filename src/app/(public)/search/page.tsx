@@ -2,6 +2,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Card from '@/src/app/components/Card';
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 interface MediaItem {
     id: number;
@@ -16,6 +17,7 @@ function SearchContent() {
 
     const searchParams = useSearchParams();
     const query = searchParams.get('query');
+    const { language, t } = useLanguage();
 
     const [loading, setLoading] = useState(true);
 
@@ -48,7 +50,7 @@ function SearchContent() {
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
                     <p className="text-sm text-gray-400">
-                        Loading catalog...
+                        {t.loadingCatalog}...
                     </p>
                 </div>
             </div>

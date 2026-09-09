@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-
-    const tmdbUrl = `https://api.themoviedb.org/3/trending/all/day`;
+export async function GET(request: NextRequest) {
+    const { searchParams } = new URL(request.url);
+    const language = searchParams.get("lang") || "en-US";
+    const tmdbUrl = `https://api.themoviedb.org/3/trending/all/day?language=${language}`;
 
     try {
         const response = await fetch(tmdbUrl, {
@@ -26,7 +27,7 @@ export async function GET() {
     } catch (error) {
         console.error("Error:", error);
         return NextResponse.json(
-            { error: "Erro interno no servidor" },
+            { error: "Internal server error" },
             { status: 500 }
         );
     }

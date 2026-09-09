@@ -1,5 +1,7 @@
 'use client'
 
+import { useLanguage } from "@/src/contexts/LanguageContext";
+
 interface CatalogProps {
     id: number;
     title?: string;
@@ -11,11 +13,12 @@ interface CatalogProps {
 export default function Card({ id, title, name, urlImage, media_type = 'movie' }: CatalogProps) {
     const displayTitle = title || name || '';
     const type = media_type === 'tv' ? 'serie' : media_type;
+    const { language } = useLanguage();
 
     if (media_type === 'person') return null;
 
     return (
-        <a href={`/home/${type}/${id}`} className="block">
+        <a href={`/home/${type}/${id}?language=${language}`} className="block">
             <div className="relative w-32 h-48 xs:w-36 xs:h-54 sm:w-40 sm:h-60 md:w-44 md:h-64 lg:w-48 lg:h-72 overflow-hidden rounded-lg sm:rounded-xl shadow-lg transition-transform hover:scale-105 duraction-300">
                 <img src={urlImage} alt={displayTitle} className="h-full w-full object-cover" />
 

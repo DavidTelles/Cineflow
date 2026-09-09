@@ -11,9 +11,9 @@ interface Catalog {
     media_type?: string;
 }
 
-export async function GetRecommendations(id: string, type: string): Promise<Catalog[]> {
+export async function GetRecommendations(id: string, type: string, language = 'en-US'): Promise<Catalog[]> {
     const response = await fetch(
-        `https://api.themoviedb.org/3/${type}/${id}/recommendations`,
+        `https://api.themoviedb.org/3/${type}/${id}/recommendations?language=${language}`,
         {
             headers: {
                 Authorization: `Bearer ${process.env.TMDB_API_TOKEN}`,

@@ -24,16 +24,19 @@ interface Movie {
 
 export default async function MoviePage({
     params,
+    searchParams,
 }: {
     params: Promise<{ id: string }>;
+    searchParams: Promise<{ language?: string }>;
 }) {
     const { id } = await params;
+    const { language = 'en-US' } = await searchParams;
 
     const [movie, cast, trailerKey, recommendations] = await Promise.all([
-        GetById(id, 'movie') as Promise<Movie>,
+        GetById(id, 'movie', language) as Promise<Movie>,
         GetCredits(id, 'movie'),
         GetTrailer(id, 'movie'),
-        GetRecommendations(id, 'movie'),
+        GetRecommendations(id, 'movie', language),
     ]);
 
     const backdropUrl = movie.backdrop_path
@@ -58,7 +61,13 @@ export default async function MoviePage({
     return (
         <div className="min-h-screen bg-[#141414] text-white relative">
             <div className="absolute inset-0 h-screen w-full overflow-hidden z-0 pointer-events-none">
-                {backdropUrl && ( <img src={backdropUrl} alt={movie.title} className="w-full h-full object-cover object-center opacity-60" /> )}
+                {backdropUrl && (
+                    <img
+                        src={backdropUrl}
+                        alt={movie.title}
+                        className="w-full h-full object-cover object-center opacity-60"
+                    />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#141414] via-transparent to-transparent" />
             </div>
@@ -96,7 +105,10 @@ export default async function MoviePage({
                     {trailerKey ? (
                         <TrailerModal trailerKey={trailerKey} />
                     ) : (
-                        <button disabled className="bg-white/50 text-black px-8 py-3.5 rounded-md font-bold cursor-not-allowed" >
+                        <button
+                            disabled
+                            className="bg-white/50 text-black px-8 py-3.5 rounded-md font-bold cursor-not-allowed"
+                        >
                             ▶ Don't have Trailer
                         </button>
                     )}
@@ -112,17 +124,26 @@ export default async function MoviePage({
             <div className="relative z-10 max-w-6xl mx-auto px-6 py-16 flex flex-col gap-12 border-t border-white/10">
                 {cast.length > 0 && (
                     <div className="flex flex-col gap-4">
-                        <h2 className="text-2xl font-bold tracking-wide">Cast</h2>
+                        <h2 className="text-2xl font-bold tracking-wide">
+                            Cast
+                        </h2>
                         <Cast cast={cast.slice(0, 10)} />
                     </div>
                 )}
 
                 {recommendations.length > 0 && (
                     <div className="flex flex-col gap-4">
-                        <h2 className="text-2xl font-bold tracking-wide">Recommendation</h2>
+                        <h2 className="text-2xl font-bold tracking-wide">
+                            Recommendation
+                        </h2>
+
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-30">
                             {recommendations.map((recommendation) => (
-                                <Card key={recommendation.id} id={recommendation.id} title={recommendation.title} urlImage={
+                                <Card
+                                    key={recommendation.id}
+                                    id={recommendation.id}
+                                    title={recommendation.title}
+                                    urlImage={
                                         recommendation.poster_path
                                             ? `https://image.tmdb.org/t/p/w500${recommendation.poster_path}`
                                             : ''

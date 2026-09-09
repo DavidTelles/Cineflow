@@ -1,59 +1,73 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
+import { useState, useEffect, FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { useLanguage, SupportedLanguage } from "@/src/contexts/LanguageContext";
 
 export default function Topbar() {
-    const [menu, setMenu] = useState(false)
-    const [isDark, setIsDark] = useState(true)
-    const [searchTerm, setSearchTerm] = useState("")
+    const [menu, setMenu] = useState(false);
+    const [isDark, setIsDark] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const { language, setLanguage, t } = useLanguage();
     const router = useRouter();
 
-    const handleSearchSubmit = (e: React.FormEvent) => {
+    const handleLanguageChange = (newLanguage: string) => {
+        const lang = newLanguage as SupportedLanguage;
+        setLanguage(lang);
+
+        if (typeof window !== "undefined") {
+            const url = new URL(window.location.href);
+            url.searchParams.set('language', newLanguage);
+            router.push(url.pathname + url.search);
+        }
+    };
+
+    const handleSearchSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            router.push(`/search?query=${encodeURIComponent(searchTerm)}`);
+            router.push(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
         }
     };
 
     useEffect(() => {
         if (isDark) {
-            document.documentElement.classList.add("dark")
+            document.documentElement.classList.add("dark");
         } else {
-            document.documentElement.classList.remove("dark")
+            document.documentElement.classList.remove("dark");
         }
-    }, [isDark])
+    }, [isDark]);
 
     const moon = (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
         </svg>
-    )
+    );
 
     const sun = (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
         </svg>
-    )
+    );
 
     const menuHamburguer = (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
-    )
+    );
 
     const closeIcon = (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
-    )
+    );
 
     const searchIcon = (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
         </svg>
-    )
+    );
 
     return (
         <>
@@ -93,8 +107,39 @@ export default function Topbar() {
 
                         <nav className="flex flex-col gap-2 w-full pt-2 border-t border-gray-200 dark:border-gray-800">
                             <Link href="/home" className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors font-medium text-sm" onClick={() => setMenu(false)}>
-                                Home
+                                {t.home}
                             </Link>
+                            <div className="relative">
+                                <select
+                                    value={language}
+                                    onChange={(e) => handleLanguageChange(e.target.value)}
+                                    className="w-full appearance-none p-2.5 pr-9 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg border border-gray-200 dark:border-gray-700 outline-none cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                                >
+                                    <option value="en-US">{t.english}</option>
+                                    <option value="pt-BR">{t.portuguese}</option>
+                                    <option value="es-ES">{t.spanish}</option>
+                                    <option value="fr-FR">{t.french}</option>
+                                    <option value="de-DE">{t.german}</option>
+                                    <option value="it-IT">{t.italian}</option>
+                                    <option value="ja-JP">{t.japanese}</option>
+                                    <option value="kn-IN">{t.kannada}</option>
+                                </select>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 size-4 pointer-events-none text-gray-500 dark:text-gray-400"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                    />
+                                </svg>
+                            </div>
                         </nav>
                     </div>
 
@@ -104,7 +149,7 @@ export default function Topbar() {
                             onClick={() => setIsDark(!isDark)}
                             className="flex items-center justify-between w-full p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
                         >
-                            <span className="text-sm font-medium">Theme</span>
+                            <span className="text-sm font-medium">{t.theme}</span>
                             {isDark ? sun : moon}
                         </button>
                     </div>
@@ -121,12 +166,12 @@ export default function Topbar() {
                         id="query"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search..."
+                        placeholder={t.searchPlaceholder || t.search}
                         className="bg-transparent border-none outline-none text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 w-36 sm:w-48 pr-2"
                     />
                     <button
                         type="submit"
-                        aria-label="Buscar"
+                        aria-label={t.search}
                         className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer"
                     >
                         {searchIcon}
@@ -134,5 +179,5 @@ export default function Topbar() {
                 </form>
             )}
         </>
-    )
+    );
 }
