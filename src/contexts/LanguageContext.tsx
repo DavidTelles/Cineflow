@@ -5,10 +5,13 @@ import { translations, SupportedLanguage } from "./traslations";
 
 export type { SupportedLanguage };
 
+export type TranslationKey = keyof typeof translations["en-US"];
+export type TranslationsType = Record<TranslationKey, string>;
+
 interface LanguageContextType {
     language: SupportedLanguage;
     setLanguage: (language: SupportedLanguage) => void;
-    t: typeof translations["en-US"];
+    t: TranslationsType;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -28,7 +31,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         localStorage.setItem("app_language", newLanguage);
     }, []);
 
-    const t = useMemo(() => {
+    const t: TranslationsType = useMemo(() => {
         return translations[language] || translations["en-US"];
     }, [language]);
 
