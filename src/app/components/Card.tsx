@@ -1,6 +1,6 @@
 'use client'
 
-interface MovieProps {
+interface CatalogProps {
     id: number;
     title?: string;
     name?: string;
@@ -8,7 +8,7 @@ interface MovieProps {
     media_type?: string;
 }
 
-export default function Card({ id, title, name, urlImage, media_type = 'movie' }: MovieProps) {
+export default function Card({ id, title, name, urlImage, media_type = 'movie' }: CatalogProps) {
     const displayTitle = title || name || '';
     const type = media_type === 'tv' ? 'serie' : media_type;
 
